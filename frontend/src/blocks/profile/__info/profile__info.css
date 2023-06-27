@@ -1,0 +1,21 @@
+.profile__info {
+  margin-right: calc(100% - 623px);
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-template-rows: 48px max-content;
+  grid-template-areas: 
+  "name button"
+  "description description";
+  gap: 11px 18px;
+}
+  
+@media screen and (max-width: 770px) {
+  .profile__info {
+    margin-right: 0;
+    margin-top: 26px;
+
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: 32px max-content;
+    gap: 9px 10px;
+  }
+}

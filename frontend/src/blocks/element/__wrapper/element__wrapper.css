@@ -1,0 +1,5 @@
+.element__wrapper {
+	padding: 22px 20px;
+	display: flex;
+	justify-content: space-between;
+}

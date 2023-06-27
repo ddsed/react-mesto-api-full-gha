@@ -1,0 +1,9 @@
+.already-sign-in__link {
+    color: white;
+    text-decoration: none;
+}
+
+.already-sign-in__link:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}

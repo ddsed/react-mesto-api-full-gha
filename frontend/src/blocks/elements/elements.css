@@ -1,0 +1,12 @@
+.elements {
+	padding-top: 50px;
+
+	display: flex;
+	justify-content: center;
+}
+
+@media screen and (max-width: 650px) {
+	.elements {
+	  padding-top: 38px;
+	}
+}

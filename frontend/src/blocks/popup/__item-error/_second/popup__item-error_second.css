@@ -1,0 +1,10 @@
+.popup__item-error_second {
+    position: absolute;
+    top: 196px;
+}
+
+@media screen and (max-width: 600px) {
+    .popup__item-error_second {
+        top: 206px;
+    }
+}

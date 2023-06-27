@@ -1,0 +1,10 @@
+.popup__submit-button_type_avatar {
+    margin-top: 48px;
+    width: 358px;
+}
+
+@media screen and (max-width: 600px) {
+    .popup__submit-button_type_avatar {
+        width: 238px;
+    }
+}

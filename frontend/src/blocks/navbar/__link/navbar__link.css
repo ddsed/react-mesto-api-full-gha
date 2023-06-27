@@ -1,0 +1,16 @@
+.navbar__link {
+    color: white;
+    text-decoration: none;
+    
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: right;
+
+    padding-top: 6px;
+}
+
+.navbar__link:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
