@@ -6,16 +6,11 @@ class Api {
         // this._baseUrl = options.baseUrl;
         // this._headers = options.headers;
     }
-
-    _getToken() {
-      const token = localStorage.getItem('jwt');
-      return token;
-    }
     
     _getHeaders() {
       return {
         "Content-Type": "application/json",
-        authorization: this._getToken(),
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       };
     }
 
