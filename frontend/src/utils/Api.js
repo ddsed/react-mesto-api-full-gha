@@ -91,12 +91,10 @@ class Api {
   }
 }
 
-let token = localStorage.getItem('jwt');
-
 const api = new Api({
-baseUrl: 'https://api.ddsed.nomoreparties.sbs/',
+baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-61',
 headers: {
-  authorization: `Bearer ${token}`,
+  authorization: "25ba17d7-1766-40fc-b636-0f2523c53d74",
   "Content-Type": "application/json"
 }
 });

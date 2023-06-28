@@ -45,5 +45,5 @@ class ApiAuth {
   }
 }
 
-const apiAuth = new ApiAuth("https://api.ddsed.nomoreparties.sbs/");
+const apiAuth = new ApiAuth("https://auth.nomoreparties.co");
 export default apiAuth;
