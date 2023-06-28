@@ -91,10 +91,12 @@ class Api {
   }
 }
 
+let token = localStorage.getItem('jwt');
+
 const api = new Api({
 baseUrl: 'https://api.ddsed.nomoreparties.sbs/',
 headers: {
-  authorization: "25ba17d7-1766-40fc-b636-0f2523c53d74",
+  authorization: `Bearer ${token}`,
   "Content-Type": "application/json"
 }
 });
