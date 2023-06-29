@@ -3,7 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 // User
 const validationUserId = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().alphanum().hex().length(24),
+    userId: Joi.string().required().hex().length(24),
   }),
 });
 
@@ -13,20 +13,20 @@ const validationUserInfo = celebrate({
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(/https*:\/\/\S+/i),
+    avatar: Joi.string().pattern(/^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i),
   }),
 });
 
 const validationUpdateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
   }),
 });
 
 const validationUpdateUserAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().pattern(/https*:\/\/\S+/i),
+    avatar: Joi.string().required().pattern(/^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/i),
   }),
 });
 
