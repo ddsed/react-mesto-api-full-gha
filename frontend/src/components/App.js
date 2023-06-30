@@ -210,9 +210,8 @@ function App() {
 		})
 		.finally(() => setIsLoading(false));
 	}
-
+	
 	//Выход
-
 	function logOut() {
 		localStorage.removeItem("jwt");
 		setIsLoggedIn(false);
