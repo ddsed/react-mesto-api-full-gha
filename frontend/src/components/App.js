@@ -10,7 +10,7 @@ import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import * as apiAuth from '../utils/ApiAuth';
+import apiAuth from '../utils/ApiAuth';
 //import apiAuth from '../utils/ApiAuth';
 import Register from './Register';
 import Login from './Login';
@@ -35,10 +35,193 @@ function App() {
 	const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
 	const [isSuccess, setSucces] = useState(false); 
 
-	const handleLogin = () => {
-        setIsLoggedIn(true);
+	useEffect(() => {
+		const jwt = localStorage.getItem("jwt");
+		if (jwt) {
+		Promise.all([api.getUserInfoApi(), api.getInitialCards()])
+		  .then(([user, cards]) => {
+			setCurrentUser(user);
+			setCards(cards);
+		  })
+		  .catch((err) => console.log(err));
+		}
+	  }, [isLoggedIn]);
+
+	useEffect(() => {
+	const jwt = localStorage.getItem("jwt");
+	if (jwt) {
+		apiAuth
+		.checkToken(jwt)
+		.then((data) => {
+			if (data) {
+			setIsLoggedIn(true);
+			setUserEmail(data.email);
+			navigate("/", { replace: true });
+			}
+		})
+		.catch((err) => console.log(err));
+	}
+	}, []);
+
+	function handleUpdateUser(data) {
+		setIsLoading(true);
+		api
+			.editUserInfo(data.name, data.about)
+			.then((newUser) => {
+			setCurrentUser(newUser);
+			closeAllPopups();
+			})
+			.catch((err) => {
+			console.log(err);
+			})
+			.finally(() => {});
+	}
+
+	useEffect(() => {
+		api
+			.getUserInfoApi()
+			.then((user) => {
+			setCurrentUser(user);
+			})
+			.catch((err) => {
+			console.log(err);
+			});
+	}, []);
+
+	useEffect(() => {
+		api
+			.getInitialCards()
+			.then((res) => {
+			setCards(res);
+			})
+			.catch((err) => {
+			console.log(err);
+			});
+	}, []);
+
+	function loginUser({email, password}) {
+		apiAuth
+		.login(email, password)
+		.then((data) => {
+		if (data.token) {
+			setUserEmail(email);
+			setIsLoggedIn(true);
+			localStorage.setItem("jwt", data.token);
+			navigate("/", { replace: true });
+			}
+		})
+		.catch((err) => {
+		console.error(err);
+		setSucces(false);
+		setInfoTooltipOpen(true);
+		})
+		.finally(() => setIsLoading(false));
+	}
+
+	const logOut = () => {
+	setIsLoggedIn(false);
+	setUserEmail("");
+	localStorage.removeItem("jwt");
+	navigate('/sign-in', { replace: true });
+	}
+
+	//Лайк карточек
+	function handleCardLike(card) {
+		const isLiked = card.likes.some(i => i._id === currentUser._id);
+		
+		api.changeLikeCardStatus(card._id, isLiked)
+		.then((newCard) => {
+			setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	} 
+
+	//Удаление карточки
+	function handleCardDelete(card) {
+		api.deleteCardApi(card._id)
+        .then(() => {
+			setCards((state) => state.filter((el) => el._id !== card._id));
+			closeAllPopups();
+		  })
+		  .catch((err) => {
+			console.error(err);
+		  });
+	}
+
+	//Обновление данных аватара
+	function handleUpdateAvatar(data) {
+		api
+		  .changeAvatar(data)
+		  .then((newData) => {
+			setCurrentUser(newData);
+			closeAllPopups();
+		  })
+		  .catch((err) => {
+			console.error(err);
+		  });
+	}
+
+	//Добавление новой карточки
+	function handleAddPlaceSubmit(name, link) {
+		api
+		.createNewCard(name, link)
+		.then((newCard) => {
+		  setCards([newCard, ...cards]);
+		  closeAllPopups();
+		})
+		.catch((err) => {
+		  console.error(err);
+		});
+	}
+
+	//Попапы открытие и закрытие
+    function handleEditAvatarClick() {
+        setIsEditAvatarPopupOpen(true)
     }
 
+    function handleEditProfileClick() {
+        setIsEditProfilePopupOpen(true)
+    }
+
+    function handleAddPlaceClick() {
+        setIsAddPlacePopupOpen(true)
+    }
+
+    function handleCardClick(card) {
+        setIsImagePopupOpen(true)
+        setSelectedCard(card)
+    }
+
+	function closeAllPopups() {
+		setIsEditProfilePopupOpen(false)
+		setIsAddPlacePopupOpen(false)
+		setIsEditAvatarPopupOpen(false)
+		setIsImagePopupOpen(false)
+		setInfoTooltipOpen(false)
+	}
+
+	function registerUser({email, password}) {
+		apiAuth
+		  .register(email, password)
+		  .then((data) => {
+			if (data) {
+				setSucces(true);
+				navigate('/sign-in', { replace: true });
+			}
+		  })
+		  .catch((err) => {
+			console.error(err);
+			setSucces(false);
+		  })
+		  .finally(() => { 
+			setIsLoading(false);
+			setInfoTooltipOpen(true);
+		  });
+	  }
+
+	/*
     const checkToken =  useCallback(() => {
         if (localStorage.getItem('token')) {
             const token = localStorage.getItem('token')
@@ -62,7 +245,7 @@ function App() {
         checkToken();
     }, [checkToken])
 
-	/*регистрация пользователя*/
+	//регистрация пользователя
 	function registerUser({ email, password }) {
 		apiAuth
 		.register(email, password)
@@ -81,7 +264,7 @@ function App() {
 		});
 	}
 
-	/*авторизация пользователя*/
+	//авторизация пользователя
     function loginUser(form) {
         if (!form.email || !form.password) {
             return
@@ -89,7 +272,7 @@ function App() {
         apiAuth.authorize(form.email, form.password)
             .then((token) => {
                 if (token) {
-                    handleLogin();
+                    setIsLoggedIn(true);
                     setUserEmail(form.email)
                     setIsLoading(true)
                     navigate('/', { replace: true })
@@ -213,7 +396,7 @@ function App() {
 			.catch((err) => {
 			console.error(err);
 			});
-	}
+	} */
 
     /*
 	//Попапы открытие и закрытие
