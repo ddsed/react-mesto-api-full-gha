@@ -35,6 +35,10 @@ class Api {
     .then(this._checkPromiseStatus);
   }
 
+  getAllCardsWhithUser() {
+    return Promise.all([this.getInitialCards(), this.getUserInfoApi()]);
+  }
+
   editUserInfo(data) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/users/me`, {
