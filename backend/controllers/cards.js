@@ -59,15 +59,13 @@ const likeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => {
-      throw new Error('Notfound');
+      throw new NotFoundError('Карточка не найдена');
     })
     .then((card) => {
       res.send(card);
     })
     .catch((err) => {
-      if (err.message === 'Notfound') {
-        next(new NotFoundError('Карточка не найдена'));
-      } else if (err.name === 'CastError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные'));
       } else {
         next(err);
@@ -82,15 +80,13 @@ const dislikeCard = (req, res, next) => {
     { new: true },
   )
     .orFail(() => {
-      throw new Error('Notfound');
+      throw new NotFoundError('Карточка не найдена');
     })
     .then((card) => {
       res.send(card);
     })
     .catch((err) => {
-      if (err.message === 'Notfound') {
-        next(new NotFoundError('Карточка не найдена'));
-      } else if (err.name === 'CastError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные'));
       } else {
         next(err);
