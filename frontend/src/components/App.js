@@ -1,4 +1,5 @@
-import React, {useState, useEffect, /*useCallback*/} from 'react';
+//ВАРИАНТ РАБОЧИЙ
+import React, {useState, useEffect} from 'react';
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom';
 import api from '../utils/Api';
 import '../index.css';

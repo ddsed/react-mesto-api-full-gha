@@ -57,6 +57,7 @@ export const getContent = (token) => {
   .then(data => data)
 } */
 
+//ВАРИАНТ РАБОЧИЙ
 class ApiAuth {
   constructor(baseUrl) {
     this._baseUrl = baseUrl;
@@ -105,4 +106,4 @@ class ApiAuth {
 }
 
 const apiAuth = new ApiAuth("https://api.ddsed.nomoreparties.sbs");
-export default apiAuth;
+export default apiAuth; 
