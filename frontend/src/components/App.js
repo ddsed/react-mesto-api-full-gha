@@ -67,9 +67,9 @@ function App() {
 	function handleUpdateUser(data) {
 		setIsLoading(true);
 		api
-			.editUserInfo(data.name, data.about)
-			.then((newUser) => {
-			setCurrentUser(newUser);
+			.editUserInfo(data)
+			.then((res) => {
+			setCurrentUser(res);
 			closeAllPopups();
 			})
 			.catch((err) => {
@@ -137,7 +137,7 @@ function App() {
 		.catch((err) => {
 			console.log(err);
 		});
-	} 
+	}
 
 	//Удаление карточки
 	function handleCardDelete(card) {

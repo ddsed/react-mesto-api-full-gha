@@ -6,6 +6,7 @@ const NoRightsError = require('../errors/no-rights');
 
 const getCards = (req, res, next) => {
   cardModel.find({})
+    .populate(['owner', 'likes'])
     .then((cards) => {
       res.send(cards);
     })
@@ -41,7 +42,10 @@ const createCard = (req, res, next) => {
     owner: req.user._id,
   })
     .then((card) => {
-      res.status(201).send(card);
+      card
+        .populate('owner')
+        .then(() => res.send(card))
+        .catch(next);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -59,11 +63,11 @@ const likeCard = (req, res, next) => {
     { new: true },
   )
     .populate(['owner', 'likes'])
-    .orFail(() => {
-      throw new NotFoundError('Карточка не найдена');
-    })
     .then((card) => {
-      res.send(card);
+      if (card) res.send(card);
+      else {
+        throw new NotFoundError('Карточка не найдена');
+      }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -81,11 +85,11 @@ const dislikeCard = (req, res, next) => {
     { new: true },
   )
     .populate(['owner', 'likes'])
-    .orFail(() => {
-      throw new NotFoundError('Карточка не найдена');
-    })
     .then((card) => {
-      res.send(card);
+      if (card) res.send(card);
+      else {
+        throw new NotFoundError('Карточка не найдена');
+      }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
