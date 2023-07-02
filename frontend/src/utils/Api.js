@@ -107,7 +107,7 @@ class Api {
         authorization: `Bearer ${token}`,
       },
     })
-    .then(this._checkPromiseStatus);
+    .then(this._getJson);
   }
 
   _deleteLike(id) {
@@ -119,11 +119,11 @@ class Api {
         authorization: `Bearer ${token}`,
       },
     })
-    .then(this._checkPromiseStatus);
+    .then(this._getJson);
   }
 
-  changeLikeCardStatus(id, isLiked) {
-    return isLiked ? this._deleteLike(id) : this._addLike(id);
+  changeLikeCardStatus(cardId, isLiked) {
+    return isLiked ? this._deleteLike(cardId) : this._addLike(cardId);
   }
 }
 
