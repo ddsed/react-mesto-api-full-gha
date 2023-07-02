@@ -6,7 +6,6 @@ const NoRightsError = require('../errors/no-rights');
 
 const getCards = (req, res, next) => {
   cardModel.find({})
-    .populate(['owner', 'likes'])
     .then((cards) => {
       res.send(cards);
     })
@@ -42,10 +41,7 @@ const createCard = (req, res, next) => {
     owner: req.user._id,
   })
     .then((card) => {
-      card
-        .populate('owner')
-        .then(() => res.send(card))
-        .catch(next);
+      res.status(201).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -62,12 +58,11 @@ const likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .populate(['owner', 'likes'])
+    .orFail(() => {
+      throw new NotFoundError('Карточка не найдена');
+    })
     .then((card) => {
-      if (card) res.send(card);
-      else {
-        throw new NotFoundError('Карточка не найдена');
-      }
+      res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -84,12 +79,11 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .populate(['owner', 'likes'])
+    .orFail(() => {
+      throw new NotFoundError('Карточка не найдена');
+    })
     .then((card) => {
-      if (card) res.send(card);
-      else {
-        throw new NotFoundError('Карточка не найдена');
-      }
+      res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {

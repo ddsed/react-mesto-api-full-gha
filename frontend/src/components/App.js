@@ -68,8 +68,8 @@ function App() {
 		setIsLoading(true);
 		api
 			.editUserInfo(data)
-			.then((res) => {
-			setCurrentUser(res);
+			.then((newData) => {
+			setCurrentUser(newData);
 			closeAllPopups();
 			})
 			.catch((err) => {
