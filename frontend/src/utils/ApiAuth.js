@@ -1,4 +1,5 @@
-/* export const BASE_URL = "https://api.ddsed.nomoreparties.sbs";
+/*
+export const BASE_URL = "https://api.ddsed.nomoreparties.sbs";
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -55,7 +56,6 @@ export const getContent = (token) => {
   .then(res => res.json())
   .then(data => data)
 } */
-
 
 class ApiAuth {
   constructor(baseUrl) {

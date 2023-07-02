@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, /*useCallback*/} from 'react';
 import { useNavigate, Navigate, Route, Routes } from 'react-router-dom';
 import api from '../utils/Api';
 import '../index.css';
@@ -10,8 +10,8 @@ import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+//import * as apiAuth from '../utils/ApiAuth';
 import apiAuth from '../utils/ApiAuth';
-//import apiAuth from '../utils/ApiAuth';
 import Register from './Register';
 import Login from './Login';
 import ProtectedRoute from './ProtectedRoute';
@@ -35,6 +35,7 @@ function App() {
 	const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
 	const [isSuccess, setSucces] = useState(false); 
 
+	
 	useEffect(() => {
 		const jwt = localStorage.getItem("jwt");
 		if (jwt) {
@@ -219,7 +220,7 @@ function App() {
 			setIsLoading(false);
 			setInfoTooltipOpen(true);
 		  });
-	  }
+	}
 
 	/*
     const checkToken =  useCallback(() => {
@@ -396,7 +397,7 @@ function App() {
 			.catch((err) => {
 			console.error(err);
 			});
-	} */
+	}
 
     /*
 	//Попапы открытие и закрытие

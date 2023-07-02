@@ -1,4 +1,5 @@
-/* class Api {
+/*
+class Api {
   constructor(baseUrl, token) {
       this._baseUrl = baseUrl;
       this._token = token;
@@ -173,7 +174,7 @@ class Api {
     }).then(this._getJson);
   }
 
-  createNewCard({ item }) {
+  createNewCard(data) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
@@ -182,8 +183,8 @@ class Api {
         authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-          link: item.link,
-          name: item.name
+          link: data.link,
+          name: data.name
       }),
     }).then(this._getJson);
   }
@@ -199,7 +200,7 @@ class Api {
     }).then(this._getJson);
   }
 
-  changeAvatar(link) {
+  changeAvatar(avatar) {
     const token = localStorage.getItem("jwt");
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
@@ -208,7 +209,7 @@ class Api {
         authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        avatar: link,
+        avatar: avatar.avatar,
       }),
     }).then(this._getJson);
   }
