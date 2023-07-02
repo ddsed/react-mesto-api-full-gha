@@ -80,8 +80,7 @@ const createUser = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-  const { name, about } = req.body;
-  userModel.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+  userModel.findByIdAndUpdate(req.user._id, req.body, { new: true, runValidators: true })
     .orFail(() => {
       throw new NotFoundError('Пользователь не найден');
     })
